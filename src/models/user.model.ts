@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { config } from '../config/config';
 import { IFUser } from '../interfaces/user.interface';
-import { Task } from '../models/task.model';
 import Joi from 'joi';
 
 const UserSchema = new Schema({
@@ -149,21 +148,21 @@ export function validate(user: any) {
     return schema.validate(user);
 }
 
-//Schema middleware
-UserSchema.pre('findOneAndUpdate', function () {
-    const data: any = this.getUpdate();
-    data.updated_time = Date.now();
-});
+// //Schema middleware
+// UserSchema.pre('findOneAndUpdate', function () {
+//     const data: any = this.getUpdate();
+//     data.updated_time = Date.now();
+// });
 
-// Funtion sync data when update data to User
-async function syncDataWhenUpdate(doc: any) {
-    await Task.updateMany({ 'posted_user._id': doc._id }, { $set: { posted_user: doc } });
-}
+// // Funtion sync data when update data to User
+// async function syncDataWhenUpdate(doc: any) {
+//     await Task.updateMany({ 'posted_user._id': doc._id }, { $set: { posted_user: doc } });
+// }
 
-//Function update data postedUser in Task when update data to User
-UserSchema.post('findOneAndUpdate', function (doc) {
-    syncDataWhenUpdate(doc);
-});
+// //Function update data postedUser in Task when update data to User
+// UserSchema.post('findOneAndUpdate', function (doc) {
+//     syncDataWhenUpdate(doc);
+// });
 
 // //Funtion sync data when delete data to User
 // async function syncDataWhenDelete(doc: any) {

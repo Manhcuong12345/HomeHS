@@ -3,7 +3,6 @@ import { Controller } from '../../common';
 import { UserService } from '../../services/user.service';
 import { auth } from '../../middlewares/auth.middleware';
 import { authorize } from '../../middlewares/authorize.middleware';
-import { uploadFile } from '../../middlewares/cloud_upload.middleware';
 
 export class UserController implements Controller {
     private readonly baseUrl: string = '/users';
@@ -21,20 +20,6 @@ export class UserController implements Controller {
 
     initRouter() {
         this._router.post(this.baseUrl, auth, authorize(['Admin']), this.createUser);
-        this._router.put(
-            this.baseUrl + '/upload',
-            auth,
-            authorize(['User']),
-            uploadFile.single('avatar'),
-            this.uploadFile
-        );
-        this._router.put(
-            this.baseUrl + '/upload/:id',
-            auth,
-            authorize(['Admin']),
-            uploadFile.single('avatar'),
-            this.uploadFileAdmin
-        );
         this._router.get(this.baseUrl + '/me', auth, authorize(['User']), this.getMe);
         this._router.get(this.baseUrl, auth, authorize(['Admin']), this.getAll);
         this._router.get(this.baseUrl + '/:id', auth, this.getUserById);
@@ -49,28 +34,6 @@ export class UserController implements Controller {
             const userData = req.body;
 
             res.send(await this.userService.createUser(userData));
-        } catch (err) {
-            next(err);
-        }
-    };
-
-    private uploadFile = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const userData = req.file;
-            const { user } = req;
-
-            res.send(await this.userService.uploadFile(user._id, userData));
-        } catch (err) {
-            next(err);
-        }
-    };
-
-    private uploadFileAdmin = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const userData = req.file;
-            const { id } = req.params;
-
-            res.send(await this.userService.uploadFile(id, userData));
         } catch (err) {
             next(err);
         }

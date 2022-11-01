@@ -2,7 +2,7 @@ import { User, validate } from '../models/user.model';
 import { pick } from 'lodash';
 import { HttpException } from '../common';
 import { filterRegisters } from '../lib/helper';
-import { upload } from '../middlewares/cloud_upload.middleware';
+//import { upload } from '../middlewares/cloud_upload.middleware';
 import {
     EMAIL_AND_PHONENUMBER_EXIST,
     EMAIL_ALREADY_EXIST,
@@ -275,17 +275,17 @@ export class UserService {
      * @param userData
      * @returns
      */
-    async uploadFile(id: any, userData: any) {
-        //config url link file then send url to cloud google storage data img and save url avatar in database
-        const fileAvatar = await upload(userData);
-        if (!fileAvatar) throw new HttpException(400, { error_code: '400', error_message: '' });
+    // async uploadFile(id: any, userData: any) {
+    //     //config url link file then send url to cloud google storage data img and save url avatar in database
+    //     const fileAvatar = await upload(userData);
+    //     if (!fileAvatar) throw new HttpException(400, { error_code: '400', error_message: '' });
 
-        userData.avatar = fileAvatar;
+    //     userData.avatar = fileAvatar;
 
-        const user = await User.findByIdAndUpdate(id, userData, { new: true }).select('-password');
-        if (!user) throw new HttpException(400, USER_NOT_FOUND);
-        user.updated_time = Date.now();
+    //     const user = await User.findByIdAndUpdate(id, userData, { new: true }).select('-password');
+    //     if (!user) throw new HttpException(400, USER_NOT_FOUND);
+    //     user.updated_time = Date.now();
 
-        return user;
-    }
+    //     return user;
+    // }
 }
