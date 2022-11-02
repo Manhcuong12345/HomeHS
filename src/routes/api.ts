@@ -4,7 +4,9 @@ import {
     AuthController,
     CategoryController,
     RegisterController,
-    UserController
+    UserController,
+    CommentController,
+    ArticleController
     // AppController,
 } from '../controllers';
 
@@ -13,7 +15,9 @@ export function initRouter(app: express.Application) {
         new AuthController(),
         new CategoryController(),
         new RegisterController(),
-        new UserController()
+        new UserController(),
+        new CommentController(),
+        new ArticleController()
     ];
     app.use(
         '/api',

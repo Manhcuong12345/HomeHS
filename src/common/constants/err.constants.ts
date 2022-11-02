@@ -24,6 +24,8 @@ export const SERVICE_NOT_FOUND = { error_code: '1007', error_message: 'Service i
 
 export const TASK_NOT_FOUND = { error_code: '1008', error_message: 'Task is not found!' };
 
+export const CATEGORY_NOT_FOUND = { error_code: '1034', error_message: 'Category not found!' };
+
 export const RATING_ALREADY_EXISTS = { error_code: '1009', error_message: 'Rateting comment is not found!' };
 
 export const DELETE_HAS_A_TASK_USER = {

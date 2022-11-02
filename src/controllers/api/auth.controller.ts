@@ -18,10 +18,6 @@ export class AuthController implements Controller {
 
     initRouter() {
         this._router.post(this.baseUrl + '/user', this.login);
-        // this.router.post(this.baseUrl + '/tasker', this.loginTasker);
-        // this._router.post(this.baseUrl + '/admin', this.loginAdmin);
-        // this._router.post(this.baseUrl + '/facebook', this.facebookLogin);
-        // this._router.post(this.baseUrl + '/google', this.googleLoginUser);
     }
 
     private login = async (req: Request, res: Response, next: NextFunction) => {

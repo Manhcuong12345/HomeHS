@@ -1,5 +1,6 @@
 import { Response, Request, Router, NextFunction } from 'express';
 import { Controller } from '../../common';
+import { User } from '../../models/user.model';
 import { RegisterService } from '../../services/register.service';
 
 export class RegisterController implements Controller {
@@ -17,37 +18,14 @@ export class RegisterController implements Controller {
     }
 
     initRouter() {
-        this._router.put(this.baseUrl + '/user', this.registerUser);
-        this._router.post(this.baseUrl + '/user/email', this.checkEmailRegister);
-        this._router.post(this.baseUrl + '/user/verify-otp', this.checkOtpUser);
+        this._router.post(this.baseUrl + '/user', this.registerUser);
     }
 
     private registerUser = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { id } = req.body;
             const userData = req.body;
 
-            res.send(await this.registerService.registerUser(id, userData));
-        } catch (err) {
-            next(err);
-        }
-    };
-
-    private checkEmailRegister = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const { email } = req.body;
-
-            res.send(await this.registerService.checkEmailRegister(email));
-        } catch (err) {
-            next(err);
-        }
-    };
-
-    private checkOtpUser = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const { otp } = req.body;
-
-            res.send(await this.registerService.checkOtpUser(otp));
+            res.send(await this.registerService.registerUser(userData));
         } catch (err) {
             next(err);
         }

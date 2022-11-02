@@ -25,9 +25,6 @@ export class AuthService {
      */
 
     async login(email: string, password: string, res: Response) {
-        //const { error } = AuthService.validate({ email, password });
-        //if (error) throw new HttpException(400, { error_code: '400', error_message: error.details[0].message });
-
         const user = await User.findOne({ email });
         if (!user) throw new HttpException(400, AUTH_FAIL);
 

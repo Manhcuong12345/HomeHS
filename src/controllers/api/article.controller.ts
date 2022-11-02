@@ -1,13 +1,13 @@
+import { ArticleService } from './../../services/article.service';
 import { NextFunction, Request, Response, Router } from 'express';
-import { CategoryService } from '../../services/category.service';
 import { Controller } from '../../common';
 import { auth } from '../../middlewares/auth.middleware';
 import { authorize } from '../../middlewares/authorize.middleware';
 
-export class CategoryController implements Controller {
-    private readonly baseUrl: string = '/categories';
+export class ArticleController implements Controller {
+    private readonly baseUrl: string = '/posts';
     private _router: Router;
-    private readonly categoryService = CategoryService.getInstance();
+    private readonly articleService = ArticleService.getInstance();
 
     get router(): Router {
         return this._router;
@@ -19,18 +19,19 @@ export class CategoryController implements Controller {
     }
 
     private initRouter(): void {
-        this._router.post(this.baseUrl, auth, authorize(['admin']), this.create);
+        this._router.post(this.baseUrl, auth, authorize(['user']), this.create);
         this._router.get(this.baseUrl, auth, this.getAll);
-        this._router.get(this.baseUrl + '/:id', auth, authorize(['admin']), this.getById);
-        this._router.put(this.baseUrl + '/:id', auth, authorize(['admin']), this.updateData);
-        this._router.delete(this.baseUrl + '/:id', auth, authorize(['admin']), this.deleteData);
+        this._router.get(this.baseUrl + '/:id', auth, this.getById);
+        this._router.put(this.baseUrl + '/:id', auth, authorize(['user']), this.updateData);
+        this._router.delete(this.baseUrl + '/:id', auth, authorize(['user']), this.deleteData);
     }
 
     private create = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const categoryData = req.body;
+            const articleData = req.body;
+            const { user } = req;
 
-            res.send(await this.categoryService.create(categoryData));
+            res.send(await this.articleService.create(articleData, user));
         } catch (err) {
             next(err);
         }
@@ -38,7 +39,8 @@ export class CategoryController implements Controller {
 
     private getAll = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            res.send(await this.categoryService.getAll());
+            const { user, query } = req;
+            res.send(await this.articleService.getAllUsersAndPaging(query, user));
         } catch (err) {
             next(err);
         }
@@ -47,7 +49,7 @@ export class CategoryController implements Controller {
     private getById = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id } = req.params;
-            res.send(await this.categoryService.getById(id));
+            res.send(await this.articleService.getArticleById(id));
         } catch (err) {
             next(err);
         }
@@ -56,9 +58,10 @@ export class CategoryController implements Controller {
     private updateData = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id } = req.params;
-            const categoryData = req.body;
+            const articleData = req.body;
+            const { user } = req;
 
-            res.send(await this.categoryService.update(id, categoryData));
+            res.send(await this.articleService.updateArticle(id, articleData, user));
         } catch (err) {
             next(err);
         }
@@ -67,7 +70,8 @@ export class CategoryController implements Controller {
     private deleteData = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id } = req.params;
-            res.send(await this.categoryService.delete(id));
+            const { user } = req;
+            res.send(await this.articleService.deleteArticle(id, user));
         } catch (err) {
             next(err);
         }

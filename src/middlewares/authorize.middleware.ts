@@ -11,7 +11,7 @@ export function authorize(roles?: string[]) {
     return (req: Request, res: Response, next: NextFunction) => {
         const { user } = req;
 
-        if (roles.includes(user.type)) {
+        if (roles.includes(user.role)) {
             return next();
         }
 

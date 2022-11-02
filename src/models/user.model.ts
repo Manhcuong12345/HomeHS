@@ -11,10 +11,6 @@ const UserSchema = new Schema({
     },
     email: {
         type: String
-        // required: true
-    },
-    avatar: {
-        type: String
     },
     phoneNumber: {
         type: String
@@ -26,66 +22,14 @@ const UserSchema = new Schema({
         type: String
         // required: true
     },
-    authType: {
+    role: {
         type: String,
-        enum: ['local', 'google', 'facebook'],
-        default: 'local'
-    },
-    authGoogleId: {
-        type: String,
-        default: null
-    },
-    authFacebookId: {
-        type: String,
-        default: null
+        enum: ['admin', 'user'],
+        default: 'user'
     },
     gender: {
-        type: String,
-        enum: ['male', 'female', 'others']
-    },
-    account_money: {
-        type: Number
-    },
-    account_number: {
-        type: Number
-    },
-    payment_method: {
         type: String
-    },
-    otp: {
-        type: String
-    },
-    fcm_token: [
-        {
-            type: String
-        }
-    ],
-    task_active: {
-        type: Boolean
-    },
-    service_used: [{ type: Schema.Types.ObjectId }],
-    success_task: [{ type: Schema.Types.ObjectId }],
-    fail_task: [{ type: Schema.Types.ObjectId }],
-    created_time: {
-        type: Number
-    },
-    updated_time: {
-        type: Number
-    },
-    is_active: {
-        type: Boolean,
-        default: false
-    },
-    user_created: {
-        type: Schema.Types.ObjectId
-    },
-    user_updated: {
-        type: Schema.Types.ObjectId
     }
-    // createdAt: {
-    //     type: Date
-    //     // default: Date.now() + 1 * 60 * 1000
-    // }
 });
 
 /**
@@ -96,7 +40,7 @@ UserSchema.methods.generateToken = function (): string {
     const data = {
         _id: this._id,
         email: this.email,
-        type: 'User'
+        role: this.role
     };
 
     return jwt.sign(data, config.get('jwtKey'));
