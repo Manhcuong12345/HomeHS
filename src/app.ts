@@ -3,6 +3,10 @@ import { config } from './config/config';
 import { errorMiddleware, Controller } from './common';
 import { initRouter } from './routes/api';
 import { connectDatabase } from './databases/mongodb';
+import swaggerUi from 'swagger-ui-express';
+import * as swaggerDocument from './swagger';
+import swaggerJSDoc from 'swagger-jsdoc';
+import { options } from './swagger';
 // import path from 'path';
 
 export class App {
@@ -37,10 +41,16 @@ export class App {
 
         initRouter(this.app);
         this.initializeErrorHandling();
+        this.swaggers();
     }
 
     private initializeErrorHandling() {
         this.app.use(errorMiddleware);
+    }
+
+    private swaggers() {
+        const specs = swaggerJSDoc(options);
+        this.app.use('/docsApi', swaggerUi.serve, swaggerUi.setup(specs));
     }
 
     async start() {
