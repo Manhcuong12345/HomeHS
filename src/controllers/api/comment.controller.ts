@@ -22,7 +22,7 @@ export class CommentController implements Controller {
         this._router.post(this.baseUrl, auth, authorize(['user']), this.create);
         this._router.get(this.baseUrl, auth, this.getAll);
         this._router.get(this.baseUrl + '/:id', this.getById);
-        this._router.get(this.baseUrl + '/posts/:id', auth, this.getPostIdComments);
+        this._router.get(this.baseUrl + '/posts/:id', auth, authorize(['admin']), this.getPostIdComments);
         this._router.put(this.baseUrl + '/:id', auth, authorize(['user']), this.updateData);
         this._router.delete(this.baseUrl + '/:id', auth, authorize(['user']), this.deleteData);
     }
