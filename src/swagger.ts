@@ -56,6 +56,13 @@ export const options = {
                     produces: ['application/json'],
                     parameters: [
                         {
+                            name: 'x-auth-token',
+                            in: 'header',
+                            required: true,
+                            type: 'string',
+                            description: ''
+                        },
+                        {
                             name: 'Body',
                             in: 'body',
                             required: true,
