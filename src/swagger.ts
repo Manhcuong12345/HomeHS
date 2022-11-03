@@ -8,10 +8,16 @@ export const options = {
             title: 'Blog-Mongo-typeScript-Nodejs',
             contact: {}
         },
-        host: 'localhost:3000',
+        host: 'testhomesv.herokuapp.com',
         basePath: '/api',
-        securityDefinitions: {},
-        schemes: ['http'],
+        securityDefinitions: {
+            apiKey: {
+                type: 'apiKey',
+                name: 'apikey',
+                in: 'header'
+            }
+        },
+        schemes: ['https', 'http'],
         consumes: ['application/json'],
         produces: ['application/json'],
         paths: {
@@ -64,7 +70,12 @@ export const options = {
                             description: '',
                             headers: {}
                         }
-                    }
+                    },
+                    security: [
+                        {
+                            apiKey: any
+                        }
+                    ]
                 },
                 get: {
                     summary: 'Get all users and paging(only admin)',
@@ -399,12 +410,43 @@ export const options = {
                     }
                 },
                 get: {
-                    summary: 'Get all comments',
+                    summary: 'Get All',
                     tags: ['Comments'],
-                    operationId: 'Getallcomments',
+                    operationId: 'GetAll',
                     deprecated: false,
                     produces: ['application/json'],
                     parameters: [
+                        {
+                            name: 'x-auth-token',
+                            in: 'header',
+                            required: true,
+                            type: 'string',
+                            description: ''
+                        }
+                    ],
+                    responses: {
+                        '200': {
+                            description: '',
+                            headers: {}
+                        }
+                    }
+                }
+            },
+            '/comments/posts/{id}': {
+                get: {
+                    summary: 'Get all comments to posts',
+                    tags: ['Comments'],
+                    operationId: 'Getallcommentstoposts',
+                    deprecated: false,
+                    produces: ['application/json'],
+                    parameters: [
+                        {
+                            name: 'id',
+                            in: 'path',
+                            required: true,
+                            type: 'string',
+                            description: '(Required) PostsId Value'
+                        },
                         {
                             name: 'x-auth-token',
                             in: 'header',
@@ -639,7 +681,7 @@ export const options = {
             LoginuserRequest: {
                 title: 'LoginuserRequest',
                 example: {
-                    email: 'cuong@gmail.com',
+                    email: 'tien@gmail.com',
                     password: '123'
                 },
                 type: 'object',
@@ -661,6 +703,60 @@ export const options = {
                     password: '123',
                     address: 'quang ninh',
                     phoneNumber: '098999163',
+                    gender: 'female',
+                    role: ''
+                },
+                type: 'object',
+                properties: {
+                    name: {
+                        type: 'string'
+                    },
+                    email: {
+                        type: 'string'
+                    },
+                    password: {
+                        type: 'string'
+                    },
+                    address: {
+                        type: 'string'
+                    },
+                    phoneNumber: {
+                        type: 'string'
+                    },
+                    gender: {
+                        type: 'string'
+                    },
+                    role: {
+                        type: 'string'
+                    }
+                },
+                required: ['name', 'email', 'password', 'address', 'phoneNumber', 'gender', 'role']
+            },
+            'Updateuserbyid(onlyadmin)Request': {
+                title: 'Updateuserbyid(onlyadmin)Request',
+                example: {
+                    name: 'cuong do',
+                    phoneNumber: '0868965433'
+                },
+                type: 'object',
+                properties: {
+                    name: {
+                        type: 'string'
+                    },
+                    phoneNumber: {
+                        type: 'string'
+                    }
+                },
+                required: ['name', 'phoneNumber']
+            },
+            RegisteruserRequest: {
+                title: 'RegisteruserRequest',
+                example: {
+                    name: 'duyen',
+                    email: 'duyen@gmail.com',
+                    password: '123',
+                    address: 'hai phong',
+                    phoneNumber: '088911163',
                     gender: 'female'
                 },
                 type: 'object',
@@ -685,60 +781,6 @@ export const options = {
                     }
                 },
                 required: ['name', 'email', 'password', 'address', 'phoneNumber', 'gender']
-            },
-            'Updateuserbyid(onlyadmin)Request': {
-                title: 'Updateuserbyid(onlyadmin)Request',
-                example: {
-                    name: 'cuong do',
-                    phoneNumber: '0868965433'
-                },
-                type: 'object',
-                properties: {
-                    name: {
-                        type: 'string'
-                    },
-                    phoneNumber: {
-                        type: 'string'
-                    }
-                },
-                required: ['name', 'phoneNumber']
-            },
-            RegisteruserRequest: {
-                title: 'RegisteruserRequest',
-                example: {
-                    name: 'cuong',
-                    email: 'cuong@gmail.com',
-                    password: '$2a$11$gEwb4jDabHFtdBAq6eLZ2eCqDDZmKp3LxZitBC5UNR2oer1MDSMkS',
-                    role: 'Admin',
-                    address: 'nha trang,vinh hai',
-                    phoneNumber: '086574563',
-                    gender: 'male'
-                },
-                type: 'object',
-                properties: {
-                    name: {
-                        type: 'string'
-                    },
-                    email: {
-                        type: 'string'
-                    },
-                    password: {
-                        type: 'string'
-                    },
-                    role: {
-                        type: 'string'
-                    },
-                    address: {
-                        type: 'string'
-                    },
-                    phoneNumber: {
-                        type: 'string'
-                    },
-                    gender: {
-                        type: 'string'
-                    }
-                },
-                required: ['name', 'email', 'password', 'role', 'address', 'phoneNumber', 'gender']
             },
             'Createcategory(onlyadmin)Request': {
                 title: 'Createcategory(onlyadmin)Request',
@@ -831,6 +873,7 @@ export const options = {
                 required: ['bodyText']
             }
         },
+        security: any,
         tags: [
             {
                 name: 'Login'
