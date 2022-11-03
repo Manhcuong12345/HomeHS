@@ -92,30 +92,4 @@ export function validate(user: any) {
     return schema.validate(user);
 }
 
-// //Schema middleware
-// UserSchema.pre('findOneAndUpdate', function () {
-//     const data: any = this.getUpdate();
-//     data.updated_time = Date.now();
-// });
-
-// // Funtion sync data when update data to User
-// async function syncDataWhenUpdate(doc: any) {
-//     await Task.updateMany({ 'posted_user._id': doc._id }, { $set: { posted_user: doc } });
-// }
-
-// //Function update data postedUser in Task when update data to User
-// UserSchema.post('findOneAndUpdate', function (doc) {
-//     syncDataWhenUpdate(doc);
-// });
-
-// //Funtion sync data when delete data to User
-// async function syncDataWhenDelete(doc: any) {
-//     await Task.deleteMany({ 'posted_user._id': doc._id });
-// }
-
-// //Function delete data postedUser in Task when update data to User
-// UserSchema.post('findOneAndDelete', function (doc) {
-//     syncDataWhenDelete(doc);
-// });
-
 export const User = mongoose.model<IFUser>('User', UserSchema);
