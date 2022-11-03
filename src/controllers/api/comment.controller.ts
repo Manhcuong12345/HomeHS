@@ -22,7 +22,7 @@ export class CommentController implements Controller {
         this._router.post(this.baseUrl, auth, authorize(['user']), this.create);
         this._router.get(this.baseUrl, auth, this.getAll);
         this._router.get(this.baseUrl + '/:id', auth, authorize(['user']), this.getById);
-        // this._router.get(this.baseUrl + '/posts/:id', auth, this.getPostIdComments);
+        this._router.get(this.baseUrl + '/posts/:id', auth, this.getPostIdComments);
         this._router.put(this.baseUrl + '/:id', auth, authorize(['user']), this.updateData);
         this._router.delete(this.baseUrl + '/:id', auth, authorize(['user']), this.deleteData);
     }
@@ -48,15 +48,15 @@ export class CommentController implements Controller {
         }
     };
 
-    // private getPostIdComments = async (req: Request, res: Response, next: NextFunction) => {
-    //     try {
-    //         const { authorId } = req.params;
+    private getPostIdComments = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { id } = req.params;
 
-    //         res.send(await this.commentService.getDataCommentToPost(authorId));
-    //     } catch (err) {
-    //         next(err);
-    //     }
-    // };
+            res.send(await this.commentService.getDataCommentToPost(id));
+        } catch (err) {
+            next(err);
+        }
+    };
 
     private getById = async (req: Request, res: Response, next: NextFunction) => {
         try {

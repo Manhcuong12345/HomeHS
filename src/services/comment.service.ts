@@ -4,6 +4,7 @@ import { Posts } from '../models/article.model';
 import { pick } from 'lodash';
 import { HttpException } from '../common';
 import { USER_NOT_FOUND } from '../common/constants/err.constants';
+import * as mongoose from 'mongoose';
 
 export class CommentService {
     private static instance: CommentService;
@@ -36,22 +37,20 @@ export class CommentService {
         return comment;
     }
 
-    // /**
-    //  * Function used to create filters
-    //  * help filter data based on user data and user submitted data (search_string)
-    //  *
-    //  * @param {*} search_string
-    //  * @param {*} user
-    //  * @returns
-    //  */
-    // async getDataCommentToPost(authorId: any) {
-    //     // const data = await Posts.findById(authorId.artc);
-    //     // if (!data) throw new HttpException(404, { error_code: '404', error_message: 'Post is not found' });
+    /**
+     * Function used to create filters
+     * help filter data based on user data and user submitted data (search_string)
+     *
+     * @param {*} search_string
+     * @param {*} user
+     * @returns
+     */
+    async getDataCommentToPost(id: any) {
+        const commentData = await CommentAdd.find({ 'articlesId._id': id });
+        if (!commentData) throw new HttpException(404, { error_code: '404', error_message: 'Posts is not found' });
 
-    //     const commentData = await CommentAdd.find({ data });
-
-    //     return commentData;
-    // }
+        return commentData;
+    }
 
     /**
      * Function used to get data of all users and pagination
@@ -114,6 +113,8 @@ export class CommentService {
      */
     async getCommentById(id: string) {
         const comments = await CommentAdd.findById(id);
+        const data = comments.articlesId._id;
+        console.log(data);
         if (!comments) throw new HttpException(404, { error_code: '404', error_message: 'Comment is not found' });
 
         return comments;

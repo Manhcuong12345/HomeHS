@@ -6,7 +6,7 @@ const CommentSchema = new Schema({
     bodyText: {
         type: String
     },
-    articleId: {
+    articlesId: {
         _id: {
             type: Schema.Types.ObjectId
         },
