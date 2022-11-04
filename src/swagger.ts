@@ -819,18 +819,18 @@ export const options = {
                 title: 'Addcomments(onlyuser)Request',
                 example: {
                     bodyText: 'Bai viet kha la hay',
-                    articleId: '636224a0c59e7e535c354874'
+                    articlesId: '636224a0c59e7e535c354874'
                 },
                 type: 'object',
                 properties: {
                     bodyText: {
                         type: 'string'
                     },
-                    articleId: {
+                    articlesId: {
                         type: 'string'
                     }
                 },
-                required: ['bodyText', 'articleId']
+                required: ['bodyText', 'articlesId']
             },
             UpdatecommentsbyidRequest: {
                 title: 'UpdatecommentsbyidRequest',

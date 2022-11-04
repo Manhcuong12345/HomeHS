@@ -26,10 +26,10 @@ export class CommentService {
         if (!authorIds)
             throw new HttpException(401, { error_code: '401', error_message: 'unauthorized create article' });
 
-        const articleData = await Posts.findById(commentData.articleId);
+        const articleData = await Posts.findById(commentData.articlesId);
 
         commentData.authorId = authorIds;
-        commentData.articleId = articleData;
+        commentData.articlesId = articleData;
 
         const comment = new CommentAdd(commentData);
         await comment.save();

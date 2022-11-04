@@ -1,6 +1,7 @@
 import { Schema, Document } from 'mongoose';
 
 export interface IFComment extends Document {
+    bodyText: string;
     articlesId: {
         _id: Schema.Types.ObjectId;
         title: string;
