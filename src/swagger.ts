@@ -80,7 +80,7 @@ export const options = {
                     },
                     security: [
                         {
-                            apiKey: any
+                            apiKey: {}
                         }
                     ]
                 },
@@ -653,6 +653,44 @@ export const options = {
                         }
                     }
                 },
+                put: {
+                    summary: 'Update posts by id(only user)',
+                    tags: ['Articles'],
+                    operationId: 'Updatepostsbyid(onlyuser)',
+                    deprecated: false,
+                    produces: ['application/json'],
+                    parameters: [
+                        {
+                            name: 'id',
+                            in: 'path',
+                            required: true,
+                            type: 'string',
+                            description: '(Required) ID'
+                        },
+                        {
+                            name: 'x-auth-token',
+                            in: 'header',
+                            required: true,
+                            type: 'string',
+                            description: ''
+                        },
+                        {
+                            name: 'Body',
+                            in: 'body',
+                            required: true,
+                            description: '',
+                            schema: {
+                                $ref: '#/definitions/Updatepostsbyid%28onlyuser%29Request'
+                            }
+                        }
+                    ],
+                    responses: {
+                        '200': {
+                            description: '',
+                            headers: {}
+                        }
+                    }
+                },
                 delete: {
                     summary: 'Delete posts by id(only user)',
                     tags: ['Articles'],
@@ -880,7 +918,7 @@ export const options = {
                 required: ['bodyText']
             }
         },
-        security: any,
+        security: {},
         tags: [
             {
                 name: 'Login'

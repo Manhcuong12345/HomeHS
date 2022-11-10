@@ -130,7 +130,7 @@ export class ArticleService {
         const postId = await Posts.findById(id);
         if (!postId) throw new HttpException(404, { error_code: '404', error_message: 'Posts is not found' });
 
-        if (postId.author.toString() !== user._id)
+        if (postId.author._id.toString() !== user._id)
             throw new HttpException(404, { error_code: '404', error_message: 'Not authorized to update this post' });
 
         const article = await Posts.findByIdAndUpdate(id, articleData, { new: true });
@@ -149,7 +149,7 @@ export class ArticleService {
     async deleteArticle(id: string, user: any) {
         const postId = await Posts.findById(id);
 
-        if (postId.author.toString() !== user._id)
+        if (postId.author._id.toString() !== user._id)
             throw new HttpException(404, { error_code: '404', error_message: 'Not authorized to delete this post' });
 
         const comment = await Posts.findByIdAndDelete(id);
